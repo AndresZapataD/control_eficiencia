@@ -28,6 +28,12 @@ public class EmpleadoController {
         List<EmpleadoResponseDto> response = empleadoService.findAll();
         return ResponseEntity.ok(response);
     }
+    
+    @GetMapping("/empresa/{empresaId}")
+    public ResponseEntity<List<EmpleadoResponseDto>> findByEmpresaId(@PathVariable Long empresaId) {
+        List<EmpleadoResponseDto> response = empleadoService.findByEmpresaId(empresaId);
+        return ResponseEntity.ok(response);
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<EmpleadoResponseDto> findById(@PathVariable Long id) {

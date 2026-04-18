@@ -8,7 +8,6 @@ function Login() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(email, password);
 
     try {
       const response = await fetch("http://localhost:8080/api/auth/login", {
@@ -30,6 +29,10 @@ function Login() {
 
       console.log("Login correcto", data);
 
+      // ✅ Guardar usuario en localStorage
+      localStorage.setItem("user", JSON.stringify(data));
+
+      // ✅ Redirigir al dashboard
       navigate("/dashboard");
 
     } catch (error) {
@@ -43,6 +46,7 @@ function Login() {
       <div className="login-card">
         <h2>Iniciar sesión</h2>
         <form onSubmit={handleSubmit}>
+          
           <label htmlFor="email">Correo electrónico</label>
           <input
             id="email"
@@ -64,6 +68,7 @@ function Login() {
           />
 
           <button type="submit">Entrar</button>
+
         </form>
       </div>
     </div>

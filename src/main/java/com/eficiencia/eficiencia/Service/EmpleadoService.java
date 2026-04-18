@@ -30,6 +30,13 @@ public class EmpleadoService {
                 .collect(Collectors.toList());
     }
 
+    public List<EmpleadoResponseDto> findByEmpresaId(Long empresaId) {
+        return empleadoRepository.findByEmpresaId(empresaId).stream()
+                .map(EmpleadoMapper::toResponseDto)
+                .collect(Collectors.toList());
+    }
+
+
     public EmpleadoResponseDto findById(Long id) {
         EmpleadoModel model = empleadoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Empleado not found"));
