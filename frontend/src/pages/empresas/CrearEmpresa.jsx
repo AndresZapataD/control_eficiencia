@@ -5,10 +5,12 @@ import {
   Button,
   Typography
 } from "@mui/material";
+
 import { useState } from "react";
-import axios from "axios";
+import { crearEmpresa } from "../../services/empresaService";
 
 function CrearEmpresa() {
+
   const [empresa, setEmpresa] = useState({
     nombre: "",
     nit: "",
@@ -22,13 +24,28 @@ function CrearEmpresa() {
     setEmpresa({ ...empresa, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log("DTO a enviar:", empresa);
+    try {
+      const response = await crearEmpresa(empresa);
+      console.log("Empresa creada:", response.data);
 
-    // aquí llamas tu API:
-    // axios.post("/api/empresas", empresa)
+      alert("Empresa creada correctamente");
+
+      // limpiar formulario
+      setEmpresa({
+        nombre: "",
+        nit: "",
+        direccion: "",
+        telefono: "",
+        email: ""
+      });
+
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Error al crear empresa");
+    }
   };
 
   return (

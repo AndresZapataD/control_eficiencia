@@ -1,10 +1,19 @@
 package com.eficiencia.eficiencia.DTO.Empresa;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+
 public class EmpresaCreateDto {
+    @NotBlank(message = "El nombre es obligatorio")
     private String nombre;
+    @NotBlank(message = "El NIT es obligatorio")
     private String nit;
+    @NotBlank(message = "La dirección es obligatoria")
     private String direccion;
+    @NotBlank(message = "El teléfono es obligatorio")
     private String telefono;
+    @Email(message = "El email debe ser válido")
+    @NotBlank(message = "El email es obligatorio")
     private String email;
 
     public EmpresaCreateDto() {

@@ -4,6 +4,9 @@ import com.eficiencia.eficiencia.DTO.Empresa.EmpresaCreateDto;
 import com.eficiencia.eficiencia.DTO.Empresa.EmpresaResponseDto;
 import com.eficiencia.eficiencia.DTO.Empresa.EmpresaUpdateDto;
 import com.eficiencia.eficiencia.Service.EmpresaService;
+
+import jakarta.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +21,7 @@ public class EmpresaController {
     private EmpresaService empresaService;
 
     @PostMapping
-    public ResponseEntity<EmpresaResponseDto> create(@RequestBody EmpresaCreateDto dto) {
+    public ResponseEntity<EmpresaResponseDto> create(@Valid@RequestBody EmpresaCreateDto dto) {
         EmpresaResponseDto response = empresaService.create(dto);
         return ResponseEntity.ok(response);
     }
