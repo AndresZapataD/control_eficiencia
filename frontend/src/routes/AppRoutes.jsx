@@ -1,10 +1,12 @@
 import { HashRouter, Routes, Route, Navigate } from "react-router-dom";
+import CrearEmpresa from "../pages/empresas/CrearEmpresa";
 
 import ProtectedRoute from "./ProtectedRoute";
 
 import Login from "../pages/Login";
 import Dashboard from "../pages/Dashboard";
 import Empleados from "../pages/Empleados";
+import AdminLayout from "../layout/AdminLayout";
 
 function AppRoutes() {
   return (
@@ -24,14 +26,14 @@ function AppRoutes() {
           } 
         />
 
-        <Route 
-          path="/empleados" 
-          element={
-            <ProtectedRoute>
-              <Empleados />
-            </ProtectedRoute>
-          } 
-        />
+        <Route element={<AdminLayout />}>
+          <Route 
+            path="/empresas/Crear" 
+            element={
+                <CrearEmpresa />
+            } 
+          />
+        </Route>
 
         <Route path="*" element={<Navigate to="/login" replace />} />
 

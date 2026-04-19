@@ -6,7 +6,10 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  Box
+  Box,
+  useTheme,
+  useMediaQuery,
+  Toolbar
 } from "@mui/material";
 
 import DashboardIcon from "@mui/icons-material/Dashboard";
@@ -16,9 +19,12 @@ import { useNavigate } from "react-router-dom";
 
 const drawerWidth = 240;
 
-const SideNavbar = () => {
+const SideNavbar = ({ mobileOpen, handleDrawerToggle }) => {
 
   const navigate = useNavigate();
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   const menuItems = [
     {
@@ -33,18 +39,10 @@ const SideNavbar = () => {
     }
   ];
 
-  return (
-    <Drawer
-      variant="permanent"
-      sx={{
-        width: drawerWidth,
-        flexShrink: 0,
-        '& .MuiDrawer-paper': {
-          width: drawerWidth,
-          boxSizing: 'border-box'
-        },
-      }}
-    >
+  const drawerContent = (
+    <Box>
+      <Toolbar />
+
       <Box sx={{ overflow: "auto" }}>
         <List>
           {menuItems.map((item, index) => (
@@ -62,6 +60,24 @@ const SideNavbar = () => {
           ))}
         </List>
       </Box>
+    </Box>
+  );
+
+  return (
+    <Drawer
+      variant={isMobile ? "temporary" : "permanent"}
+      open={isMobile ? mobileOpen : true}
+      onClose={handleDrawerToggle}
+      sx={{
+        width: drawerWidth,
+        flexShrink: 0,
+        '& .MuiDrawer-paper': {
+          width: drawerWidth,
+          boxSizing: 'border-box'
+        },
+      }}
+    >
+      {drawerContent}
     </Drawer>
   );
 };
