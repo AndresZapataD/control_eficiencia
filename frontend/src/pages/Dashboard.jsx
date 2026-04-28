@@ -1,8 +1,10 @@
+import DashboardLayout from "../layout/DashboardLayout";
+
 function Dashboard() {
   return (
-    <div>
+    <DashboardLayout>
       <h1>Dashboard</h1>
-    </div>
+    </DashboardLayout>
   );
 }
 

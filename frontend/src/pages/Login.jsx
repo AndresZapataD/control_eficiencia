@@ -25,6 +25,7 @@ function Login() {
         throw new Error("Credenciales incorrectas");
       }
 
+      
       const data = await response.json();
 
       console.log("Login correcto", data);
@@ -34,6 +35,7 @@ function Login() {
 
       // ✅ Redirigir al dashboard
       navigate("/dashboard");
+      console.log(data);
 
     } catch (error) {
       console.error(error);

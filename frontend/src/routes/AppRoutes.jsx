@@ -1,5 +1,7 @@
 import { HashRouter, Routes, Route, Navigate } from "react-router-dom";
+
 import CrearEmpresa from "../pages/empresas/CrearEmpresa";
+import ConsultarEmpresa from "../pages/empresas/ConsultarEmpresa";
 
 import ProtectedRoute from "./ProtectedRoute";
 
@@ -13,28 +15,34 @@ function AppRoutes() {
     <HashRouter>
       <Routes>
 
+        {/* 🔹 Redirección inicial */}
         <Route path="/" element={<Navigate to="/login" replace />} />
 
+        {/* 🔹 Login */}
         <Route path="/login" element={<Login />} />
 
-        <Route 
-          path="/dashboard" 
+        {/* 🔹 Rutas protegidas */}
+        <Route
           element={
             <ProtectedRoute>
-              <Dashboard />
+              <AdminLayout />
             </ProtectedRoute>
-          } 
-        />
+          }
+        >
 
-        <Route element={<AdminLayout />}>
-          <Route 
-            path="/empresas/Crear" 
-            element={
-                <CrearEmpresa />
-            } 
-          />
+          {/* Dashboard */}
+          <Route path="/dashboard" element={<Dashboard />} />
+
+          {/* Empresas */}
+          <Route path="/empresas" element={<ConsultarEmpresa />} />
+          <Route path="/empresas/crear" element={<CrearEmpresa />} />
+
+          {/* (Opcional futuro) */}
+          <Route path="/empleados" element={<Empleados />} />
+
         </Route>
 
+        {/* 🔹 Ruta fallback */}
         <Route path="*" element={<Navigate to="/login" replace />} />
 
       </Routes>

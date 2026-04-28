@@ -9,11 +9,14 @@ import {
   Box,
   useTheme,
   useMediaQuery,
-  Toolbar
+  Toolbar,
+  patch
 } from "@mui/material";
 
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import PeopleIcon from "@mui/icons-material/People";
+import BusinessIcon from "@mui/icons-material/Business";
+import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 
 import { useNavigate } from "react-router-dom";
 
@@ -36,7 +39,20 @@ const SideNavbar = ({ mobileOpen, handleDrawerToggle }) => {
       text: "Empleados",
       icon: <PeopleIcon />,
       path: "/empleados"
+    },
+
+    {
+    text: "crear empresa",
+    icon: <AddOutlinedIcon />,
+    path:"/empresas/Crear"
+    },
+
+    {
+      text: "Consultar empresa",
+      icon: <BusinessIcon />,
+      path:"/empresas"
     }
+
   ];
 
   const drawerContent = (

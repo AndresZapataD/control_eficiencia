@@ -5,17 +5,25 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "empresa")
+@Table(name = "empresa", uniqueConstraints = {
+    @UniqueConstraint(columnNames = "nit"),
+    @UniqueConstraint(columnNames = "email")
+})
 public class EmpresaModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String nombre;
+    @Column(nullable = false, unique = true)
     private String nit;
+    @Column(nullable = false)
     private String direccion;
+    @Column(nullable = false)
     private String telefono;
+    @Column(nullable = false, unique = true)
     private String email;
 
     private Boolean activo;
