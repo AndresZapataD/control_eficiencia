@@ -1,0 +1,24 @@
+{
+  "groups": [
+    {
+      "name": "jwt",
+      "description": "JWT Configuration Properties",
+      "type": "com.eficiencia.eficiencia.config.JwtProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "jwt.secret",
+      "type": "java.lang.String",
+      "description": "JWT secret key for signing tokens. Must be at least 32 characters long.",
+      "defaultValue": "clave_super_secreta_1234567890_la_cual_debe_ser_muy_larga_para_seguridad"
+    },
+    {
+      "name": "jwt.expiration",
+      "type": "java.lang.Long",
+      "description": "JWT token expiration time in milliseconds (3600000 = 1 hour)",
+      "defaultValue": "3600000"
+    }
+  ],
+  "hints": []
+}

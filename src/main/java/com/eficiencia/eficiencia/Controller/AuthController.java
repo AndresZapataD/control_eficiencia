@@ -1,5 +1,6 @@
 package com.eficiencia.eficiencia.Controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,25 +27,69 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequestDto request) {
+        try {
+            if (request.getEmail() == null || request.getEmail().isEmpty() ||
+                request.getPassword() == null || request.getPassword().isEmpty()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(createErrorResponse("Email y contraseña son requeridos"));
+            }
 
-        // 🔐 Validar usuario
-        UsuarioModel usuario = authService.login(
-                request.getEmail(),
-                request.getPassword()
-        );
+            UsuarioModel usuario = authService.login(request.getEmail(), request.getPassword());
 
-        if (usuario == null) {
-            return ResponseEntity.status(401).body("Credenciales incorrectas");
+            String token = jwtService.generateToken(usuario.getEmail());
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("token", token);
+            String nombre = usuario.getEmpleado() != null 
+                    ? usuario.getEmpleado().getNombre() 
+                    : usuario.getEmail();
+            
+            response.put("user", Map.of(
+                    "id", usuario.getId(),
+                    "email", usuario.getEmail(),
+                    "nombre", nombre
+            ));
+
+            return ResponseEntity.ok(response);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(createErrorResponse(e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(createErrorResponse("Error interno del servidor"));
         }
+    }
 
-        // 🔥 Generar token
-        String token = jwtService.generateToken(usuario.getEmail());
+    @PostMapping("/validate")
+    public ResponseEntity<?> validateToken(@RequestHeader("Authorization") String authHeader) {
+        try {
+            if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body(createErrorResponse("Token no proporcionado"));
+            }
 
-        // 📦 Respuesta estructurada
-        Map<String, Object> response = new HashMap<>();
-        response.put("token", token);
-        response.put("user", usuario);
+            String token = authHeader.substring(7);
+            if (jwtService.isValid(token)) {
+                String email = jwtService.extractEmail(token);
+                return ResponseEntity.ok(Map.of("valid", true, "email", email));
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body(createErrorResponse("Token inválido"));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(createErrorResponse("Error validando token"));
+        }
+    }
 
-        return ResponseEntity.ok(response);
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout() {
+        return ResponseEntity.ok(Map.of("message", "Sesión cerrada exitosamente"));
+    }
+
+    private Map<String, Object> createErrorResponse(String message) {
+        Map<String, Object> error = new HashMap<>();
+        error.put("error", message);
+        return error;
     }
 }

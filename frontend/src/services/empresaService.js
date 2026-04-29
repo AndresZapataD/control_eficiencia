@@ -1,7 +1,23 @@
-import axios from "axios";
+import apiClient from './api';
 
-const API_URL = "http://localhost:8080/api/empresas";
+const EMPRESAS_URL = '/empresas';
 
 export const crearEmpresa = (empresa) => {
-  return axios.post(API_URL, empresa);
+  return apiClient.post(EMPRESAS_URL, empresa);
+};
+
+export const obtenerEmpresas = () => {
+  return apiClient.get(EMPRESAS_URL);
+};
+
+export const obtenerEmpresaPorId = (id) => {
+  return apiClient.get(`${EMPRESAS_URL}/${id}`);
+};
+
+export const actualizarEmpresa = (id, empresa) => {
+  return apiClient.put(`${EMPRESAS_URL}/${id}`, empresa);
+};
+
+export const eliminarEmpresa = (id) => {
+  return apiClient.delete(`${EMPRESAS_URL}/${id}`);
 };
